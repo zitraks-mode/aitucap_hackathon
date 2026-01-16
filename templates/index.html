@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>AI Health Scan</title>
+
+<style>
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    width: 100%;
+}
+
+.container {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card {
+    width: 330px;
+    padding: 25px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(14px);
+    color: white;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    animation: fadeUp 1s ease;
+}
+
+h2 {
+    margin-bottom: 15px;
+}
+
+.label {
+    padding: 12px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 12px;
+    cursor: pointer;
+    display: block;
+    transition: 0.3s;
+}
+
+.label:hover {
+    background: rgba(255,255,255,0.4);
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.preview {
+    position: relative;
+    margin-top: 15px;
+}
+
+.preview img {
+    width: 100%;
+    border-radius: 12px;
+}
+
+.scan {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(
+        to right,
+        rgba(0,255,255,0),
+        rgba(0,255,255,0.9),
+        rgba(0,255,255,0)
+    );
+    animation: scan 0.7s ease-out forwards;
+}
+
+@keyframes scan {
+    from { top: 20%; opacity: 1; }
+    to { top: 70%; opacity: 0; }
+}
+
+.result {
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+button {
+    margin: 25px auto 0;
+    display: block;
+    padding: 14px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    background: white;
+    color: #0077ff;
+    font-weight: bold;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+
+<body>
+
+<form method="POST" enctype="multipart/form-data">
+<div class="container">
+
+    <!-- КОЖА -->
+    <div class="card">
+        <h2>🧴 Кожа</h2>
+        <label class="label">
+            Загрузить фото
+            <input type="file" name="skin_image" accept="image/*">
+        </label>
+
+        {% if skin_img %}
+        <div class="preview">
+            <img src="data:image/png;base64,{{ skin_img }}">
+            <div class="scan"></div>
+        </div>
+        {% endif %}
+
+        <div class="result">{{ skin_result }}</div>
+    </div>
+
+    <!-- ГЛАЗА -->
+    <div class="card">
+        <h2>👁 Глаза</h2>
+        <label class="label">
+            Загрузить фото
+            <input type="file" name="eyes_image" accept="image/*">
+        </label>
+
+        {% if eyes_img %}
+        <div class="preview">
+            <img src="data:image/png;base64,{{ eyes_img }}">
+            <div class="scan"></div>
+        </div>
+        {% endif %}
+
+        <div class="result">{{ eyes_result }}</div>
+    </div>
+
+    <!-- НОГТИ -->
+    <div class="card">
+        <h2>💅 Ногти</h2>
+        <label class="label">
+            Загрузить фото
+            <input type="file" name="nails_image" accept="image/*">
+        </label>
+
+        {% if nails_img %}
+        <div class="preview">
+            <img src="data:image/png;base64,{{ nails_img }}">
+            <div class="scan"></div>
+        </div>
+        {% endif %}
+
+        <div class="result">{{ nails_result }}</div>
+    </div>
+    <!-- РЕНТГЕН -->
+<div class="card">
+    <h2>🫁 Рентген</h2>
+    <label class="label">
+        Загрузить снимок
+        <input type="file" name="xray_image" accept="image/*">
+    </label>
+
+    {% if xray_img %}
+    <div class="preview">
+        <img src="data:image/png;base64,{{ xray_img }}">
+        <div class="scan"></div>
+    </div>
+    {% endif %}
+
+    <div class="result">{{ xray_result }}</div>
+</div>
+
+
+</div>
+
+<button type="submit">🔍 Запустить анализ</button>
+</form>
+
+</body>
+</html>
